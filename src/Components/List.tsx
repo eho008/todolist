@@ -2,43 +2,38 @@ import { useRef, useState } from "react";
 import { deleteList, type ListType } from "../state/listsSlice";
 import ListItem from "./ListItem.tsx";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../state/store.tsx";
-import { addItem } from "../state/listsSlice.tsx";
+
+import { addItem } from "../state/itemsSlice.tsx";
 
 type ListProps = {
   list: ListType;
 
-  id: string;
+  key: string;
 };
 
-export default function List({ list, id }: ListProps) {
+export default function List({ list }: ListProps) {
   const dispatch = useDispatch();
   const ref = useRef(null);
   const [input, setInput] = useState<string>("");
-  const [style, setStyle] = useState<{ display: string }>({ display: "none" });
+
+  const items = useSelector((state: RootState) => state.items);
 
   return (
-    <div
-      className="list"
-      onMouseEnter={(e) => {
-        setStyle({ display: "block" });
-      }}
-      onMouseLeave={(e) => {
-        setStyle({ display: "none" });
-      }}
-    >
+    <div className="list">
       <h3>{list.title}</h3>
       <div
         className="trash"
-        style={style}
-        onClick={() => dispatch(deleteList({ id: id }))}
+        onClick={() => dispatch(deleteList({ id: list.listId }))}
       >
         <i className="fa-solid fa-trash"></i>
       </div>
       <ul>
-        {list.items.map((i) => (
-          <ListItem item={i} listId={id} />
-        ))}
+        {items.map(
+          (i) =>
+            i.listId === list.listId && (
+              <ListItem item={i} key={i.itemId} listId={list.listId} />
+            )
+        )}
         <li>
           <button className="addItem" onClick={() => ref.current.focus()}>
             +
@@ -50,7 +45,7 @@ export default function List({ list, id }: ListProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                dispatch(addItem({ id: input, listsItem: input }));
+                dispatch(addItem({ id: list.listId, listsItem: input }));
                 setInput("");
               }
             }}

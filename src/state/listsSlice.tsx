@@ -1,11 +1,17 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { v4 as uuid4 } from "uuid";
 
 export type ListType = {
   title: string;
-  items: string[];
+  listId: string;
+  createdAt: number;
 };
 
-const exampleList = { title: "example", items: ["first", "second", "third"] };
+const exampleList = {
+  title: "example",
+  listId: "1",
+  createdAt: Date.now(),
+};
 
 const initialState: ListType[] = [exampleList];
 
@@ -13,36 +19,19 @@ const listsSlice = createSlice({
   name: "lists",
   initialState,
   reducers: {
-    addItem: (
-      state,
-      action: PayloadAction<{ id: string; listsItem: string }>
-    ) =>
-      state.map((list) =>
-        list.title === action.payload.id
-          ? {
-              title: list.title,
-              items: [...list.items, action.payload.listsItem],
-            }
-          : list
-      ),
     deleteList: (state, action) =>
-      state.filter((list) => list.title !== action.payload.id),
-    addList: (state, action: PayloadAction<{ title: string }>) => [
-      ...state,
-      { title: action.payload.title, items: [] },
-    ],
-    deleteItem: (state, action) =>
-      state.map((list) =>
-        list.title === action.payload.listId
-          ? {
-              title: list.title,
-              items: list.items.filter((item) => item !== action.payload.item),
-            }
-          : list
-      ),
+      state.filter((list) => list.listId !== action.payload.id),
+    addList: (state, action) => {
+      console.log(action.payload.title);
+      state.push({
+        title: action.payload.title,
+        listId: uuid4(),
+        createdAt: Date.now(),
+      });
+    },
   },
 });
 
-export const { addItem, deleteList, addList, deleteItem } = listsSlice.actions;
+export const { deleteList, addList } = listsSlice.actions;
 
 export default listsSlice.reducer;
