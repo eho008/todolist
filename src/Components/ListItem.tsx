@@ -1,39 +1,27 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteItem } from "../state/listsSlice";
+import { deleteItem } from "../state/itemsSlice";
 
 type ListItemProps = {
-  item: string;
-
+  item: { content: string; itemId: string };
   listId: string;
+  key: string;
 };
 
-export default function ListItem({ item, listId }: ListItemProps) {
+export default function ListItem({ item }: ListItemProps) {
   const dispatch = useDispatch();
   const [checked, setChecked] = useState<boolean>(false);
-  const [style, setStyle] = useState<{ display: string }>({ display: "none" });
 
-  function handleCheck() {
-    setChecked((p) => !p);
-  }
   return (
-    <li
-      onMouseEnter={(e) => {
-        setStyle({ display: "block" });
-      }}
-      onMouseLeave={(e) => {
-        setStyle({ display: "none" });
-      }}
-      className="yeller"
-    >
+    <li className="listItem">
       <div className="itemName">
         <div className={checked ? "checked" : ""}>
-          <input type="checkbox" onChange={() => handleCheck()} />
-          {item}
+          <input type="checkbox" onChange={() => setChecked((p) => !p)} />
+          {item.content}
         </div>
         <div
-          style={style}
-          onClick={(e) => dispatch(deleteItem({ listId: listId, item: item }))}
+          onClick={() => dispatch(deleteItem({ itemId: item.itemId }))}
+          className="x-sign"
         >
           {<i className="fa-solid fa-xmark"></i>}
         </div>

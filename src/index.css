@@ -109,3 +109,19 @@ input:focus {
   display: flex;
   justify-content: flex-start;
 } */
+
+.x-sign {
+  display: none;
+}
+
+.listItem:hover .x-sign {
+  display: block;
+}
+
+.list:hover .trash {
+  display: block;
+}
+
+.trash {
+  display: none;
+}
