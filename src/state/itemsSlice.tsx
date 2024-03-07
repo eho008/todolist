@@ -1,14 +1,15 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { v4 as uuid4 } from "uuid";
 
-type ItemType = {
+export interface ItemType {
   content: string;
-  itemId: string;
+  id: string;
   listId: string;
-};
+  checked: boolean;
+}
 
 const initialState: ItemType[] = [
-  { content: "first", itemId: uuid4(), listId: "1" },
+  { content: "first", id: uuid4(), listId: "1", checked: false },
 ];
 
 const itemsSlice = createSlice({
@@ -22,14 +23,29 @@ const itemsSlice = createSlice({
       state.push({
         content: action.payload.listsItem,
         listId: action.payload.id,
-        itemId: uuid4(),
+        id: uuid4(),
+        checked: false,
+      });
+    },
+    editItem: (
+      state,
+      action: PayloadAction<{ id: string; listsItem?: string }>
+    ) => {
+      state.map((item) => {
+        if (action.payload.listsItem) {
+          item.id === action.payload.id
+            ? (item.content = action.payload.listsItem)
+            : item;
+        } else {
+          item.id === action.payload.id ? (item.checked = !item.checked) : item;
+        }
       });
     },
 
     deleteItem: (state, action) =>
-      state.filter((item) => item.itemId !== action.payload.itemId),
+      state.filter((item) => item.id !== action.payload.itemId),
   },
 });
 
-export const { deleteItem, addItem } = itemsSlice.actions;
+export const { deleteItem, addItem, editItem } = itemsSlice.actions;
 export default itemsSlice.reducer;

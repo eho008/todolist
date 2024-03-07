@@ -1,31 +1,68 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteItem } from "../state/itemsSlice";
+import { deleteItem, editItem } from "../state/itemsSlice";
+import { ItemType } from "../state/itemsSlice";
+import styled from "styled-components";
 
-type ListItemProps = {
-  item: { content: string; itemId: string };
-  listId: string;
-  key: string;
-};
+const XSign = styled.div`
+  display: none;
+`;
+
+const StyledListItem = styled.li`
+  &:hover ${XSign} {
+    display: block;
+  }
+`;
+
+const StyledItemName = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const StyledInput = styled.input`
+  background-color: #f0ead2;
+  margin: 0.25rem;
+  border: none;
+  border-radius: 0.25rem;
+  &:focus {
+    background-color: white;
+    border: solid black 1px;
+  }
+`;
+
+interface ListItemProps {
+  item: ItemType;
+  id: string;
+}
 
 export default function ListItem({ item }: ListItemProps) {
   const dispatch = useDispatch();
-  const [checked, setChecked] = useState<boolean>(false);
+  const [input, setInput] = useState<string>(item.content);
 
   return (
-    <li className="listItem">
-      <div className="itemName">
-        <div className={checked ? "checked" : ""}>
-          <input type="checkbox" onChange={() => setChecked((p) => !p)} />
-          {item.content}
+    <StyledListItem>
+      <StyledItemName>
+        <div className={item.checked ? "checked" : undefined}>
+          <input
+            type="checkbox"
+            onChange={() => dispatch(editItem({ id: item.id }))}
+          />
+          <StyledInput
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                dispatch(editItem({ id: item.id, listsItem: input }));
+                e.currentTarget.blur();
+              }
+            }}
+          />
         </div>
-        <div
-          onClick={() => dispatch(deleteItem({ itemId: item.itemId }))}
-          className="x-sign"
-        >
+        <XSign onClick={() => dispatch(deleteItem({ itemId: item.id }))}>
           {<i className="fa-solid fa-xmark"></i>}
-        </div>
-      </div>
-    </li>
+        </XSign>
+      </StyledItemName>
+    </StyledListItem>
   );
 }
