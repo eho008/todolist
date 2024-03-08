@@ -1,3 +1,10 @@
+##Installation
+
+1. Clone the repo
+   > git clone https://github.com/eho008/todolist.git
+2. Install NPM packages
+   > yarn install
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
