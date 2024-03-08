@@ -3,7 +3,7 @@
 1. Clone the repo
    > git clone https://github.com/eho008/todolist.git
 2. Install NPM packages
-   > npm install
+   > yarn install
 
 # React + TypeScript + Vite
 

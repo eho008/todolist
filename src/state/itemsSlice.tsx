@@ -29,14 +29,18 @@ const itemsSlice = createSlice({
     },
     editItem: (
       state,
-      action: PayloadAction<{ id: string; listsItem?: string }>
+      action: PayloadAction<{
+        id: string;
+        listsItem?: string;
+        checked?: boolean;
+      }>
     ) => {
       state.map((item) => {
         if (action.payload.listsItem) {
           item.id === action.payload.id
             ? (item.content = action.payload.listsItem)
             : item;
-        } else {
+        } else if (action.payload.checked) {
           item.id === action.payload.id ? (item.checked = !item.checked) : item;
         }
       });

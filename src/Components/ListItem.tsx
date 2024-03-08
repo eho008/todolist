@@ -24,9 +24,14 @@ export const StyledInput = styled.input`
   margin: 0.25rem;
   border: none;
   border-radius: 0.25rem;
-  &:focus {
-    background-color: white;
-    border: solid black 1px;
+
+  &:hover {
+    background-color: #f7f3e6;
+  }
+  &:focus-visible {
+    background-color: #f7f3e6;
+    outline: 1px solid;
+    outline-color: #9e9e9e;
   }
 `;
 
@@ -45,7 +50,7 @@ export default function ListItem({ item }: ListItemProps) {
         <div className={item.checked ? "checked" : undefined}>
           <input
             type="checkbox"
-            onChange={() => dispatch(editItem({ id: item.id }))}
+            onChange={() => dispatch(editItem({ id: item.id, checked: true }))}
           />
           <StyledInput
             type="text"

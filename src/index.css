@@ -3,6 +3,11 @@
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
+
+.checked {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
 /*
 input {
   background-color: #f0ead2;
@@ -51,10 +56,6 @@ input {
   padding-left: 0.25rem;
 }
 
-.checked {
-  text-decoration: line-through;
-  opacity: 0.5;
-}
 
 .lists {
   display: flex;

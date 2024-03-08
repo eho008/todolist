@@ -15,7 +15,7 @@ const StyledTrash = styled.div`
 
 const StyledList = styled.div`
   width: 15rem;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
   margin: 0.5rem;
   border-radius: 0.25rem;
   position: relative;
@@ -36,6 +36,10 @@ const StyledHeadlineInput = styled(StyledInput)`
   margin: 0.25rem;
   border: none;
   border-radius: 0.25rem;
+  &:focus {
+    outline: 1px solid;
+    outline-color: #9e9e9e;
+  }
 `;
 
 const StyledButton = styled.button`
@@ -45,12 +49,10 @@ const StyledButton = styled.button`
   font-weight: bold;
   width: 1rem;
   height: 1rem;
-  padding: 0px;
+  padding: 0 0 0.14rem;
   border-radius: 50%;
   text-align: center;
-
-  line-height: 0px;
-  padding-bottom: 0.14rem;
+  line-height: 0;
 `;
 
 const Wrapper = styled.div`
@@ -100,9 +102,7 @@ export default function List({ list }: ListProps) {
         <li>
           <StyledButton
             onClick={() => {
-              if (ref !== undefined || ref !== null) {
-                ref.current.focus();
-              }
+              ref.current?.focus();
             }}
           >
             +
