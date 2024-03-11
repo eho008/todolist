@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { addList } from "../state/listsSlice";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { StyledInput } from "./ListItem";
 
 const StyledForm = styled.form`
   background-color: #dde5b6;
@@ -17,14 +18,14 @@ const StyledButton = styled.button`
 export default function CreateListForm() {
   const dispatch = useDispatch();
   const [newList, setNewList] = useState<string>("");
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     dispatch(addList({ title: newList }));
     setNewList("");
   }
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <input
+      <StyledInput
         type="text"
         placeholder="Create a new List..."
         onChange={(e) => {
