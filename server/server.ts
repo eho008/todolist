@@ -21,8 +21,20 @@ let lists = [
 ];
 
 let items = [
-  { content: "some todo", listId: "1", id: "11", checked: false },
-  { content: "some other todo", listId: "2", id: "12", checked: false },
+  {
+    content: "some todo",
+    listId: "1",
+    id: "11",
+    checked: false,
+    important: true,
+  },
+  {
+    content: "some other todo",
+    listId: "2",
+    id: "12",
+    checked: false,
+    important: false,
+  },
 ];
 
 app.get("/lists", (req: Request, res: Response) => {
@@ -64,8 +76,13 @@ app.post("/lists/:id/todos", (req: Request, res: Response) => {
 
 app.put("/lists/:listid/todos/:id", (req: Request, res: Response) => {
   items.map((item) => {
-    item.id === req.params.id ? (item.content = req.body.content) : item;
+    item.id === req.params.id
+      ? ((item.content = req.body.content),
+        (item.checked = req.body.checked),
+        (item.important = req.body.important))
+      : item;
   });
+  res.send(req.body);
 });
 
 app.delete("/lists/:listid/todos/:id", (req: Request, res: Response) => {
