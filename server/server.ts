@@ -16,8 +16,14 @@ let lists = [
     title: "Server ToDo List",
     listId: "1",
     createdAt: Date.now(),
+    reminder: undefined,
   },
-  { title: "Another Server ToDo List", listId: "2", createdAt: Date.now() },
+  {
+    title: "Another Server ToDo List",
+    listId: "2",
+    createdAt: Date.now(),
+    reminder: undefined,
+  },
 ];
 
 let items = [
@@ -54,8 +60,11 @@ app.post("/lists", (req: Request, res: Response) => {
  */
 app.put("/lists/:id", (req: Request, res: Response) => {
   lists.map((list) => {
-    list.listId === req.params.id ? (list.title = req.body.title) : list;
+    list.listId === req.params.id
+      ? ((list.title = req.body.title), (list.reminder = req.body.reminder))
+      : list;
   });
+  res.send(req.body);
 });
 
 app.delete("/lists/:id", (req: Request, res: Response) => {

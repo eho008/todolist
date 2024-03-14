@@ -1,3 +1,5 @@
+@import "react-datepicker/dist/react-datepicker";
+
 * {
   background-color: #f0ead2;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -8,6 +10,42 @@
   text-decoration: line-through;
   opacity: 0.5;
 }
+
+.dropdown {
+  position: absolute;
+  top: 23px;
+  right: 7px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+  outline: 1px solid #d3d3d3;
+  border-radius: 3px;
+  z-index: 1;
+  background-color: #f7f3e6;
+}
+
+.react-datepicker__header {
+  background-color: #f0ead2;
+}
+
+.react-datepicker-wrapper input[type="text"] {
+  border: none;
+  background-color: inherit;
+}
+
+.react-datepicker-wrapper {
+  margin: 0;
+  border: none;
+  background-color: inherit;
+}
+
+.react-datepicker__input-container {
+  background-color: inherit;
+  border: none;
+}
+
+.over {
+  background-color: #d59f8d !important;
+}
+
 /*
 input {
   background-color: #f0ead2;

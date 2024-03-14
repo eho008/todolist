@@ -8,6 +8,7 @@ export interface ListType {
   title: string;
   listId: string;
   createdAt: number;
+  reminder?: Date;
 }
 interface FetchListsType {
   lists: ListType[];
@@ -32,7 +33,7 @@ export const fetchLists = createAsyncThunk("lists/fetchlists", async () => {
 
 export const addNewList = createAsyncThunk(
   "lists/addNewList",
-  async (list: { title: string; listId: string; createdAt: number }) => {
+  async (list: ListType) => {
     try {
       const response = await axios.post(LISTS_URL, list);
       return response.data;
@@ -48,12 +49,13 @@ export const addNewList = createAsyncThunk(
 
 export const updateList = createAsyncThunk(
   "lists/updateList",
-  async (list: { title: string; listId: string }) => {
+  async (list: ListType) => {
     try {
       const response = await axios.put(
         LISTS_URL.concat(`/${list.listId}`),
         list
       );
+
       return response.data;
     } catch (err) {
       let errorMessage = "Failed to fetch lists";
@@ -70,14 +72,14 @@ export const delList = createAsyncThunk(
   async (list: { listId: string }) => {
     try {
       const response = await axios.delete(LISTS_URL.concat(`/${list.listId}`));
-      console.log(response.data);
+
       return response.data;
     } catch (err) {
       let errorMessage = "Failed to fetch lists";
       if (err instanceof Error) {
         errorMessage = err.message;
       }
-      console.log(errorMessage);
+
       return errorMessage;
     }
   }
@@ -115,7 +117,7 @@ const listsSlice = createSlice({
       })
       .addCase(fetchLists.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.lists = action.payload;
+        state.lists = [...action.payload];
       })
       .addCase(fetchLists.rejected, (state, action) => {
         state.status = "failed";
@@ -130,17 +132,20 @@ const listsSlice = createSlice({
             listId: string;
             title: string;
             createdAt: number;
+            reminder?: Date;
           }>
         ) => {
           state.lists.push(action.payload);
         }
       )
       .addCase(updateList.fulfilled, (state, action) => {
-        state.lists.map((list) => {
+        const newList: ListType[] = [];
+        state.lists.forEach((list) =>
           list.listId === action.payload.listId
-            ? (list.title = action.payload.title)
-            : list;
-        });
+            ? newList.push(action.payload)
+            : newList.push(list)
+        );
+        state.lists = newList;
       })
       .addCase(delList.fulfilled, (state, action) => {
         state.lists = state.lists.filter(
