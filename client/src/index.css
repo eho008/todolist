@@ -46,6 +46,80 @@
   background-color: #d59f8d !important;
 }
 
+.top-page {
+  position: relative;
+  background-color: inherit;
+}
+
+.fa-magnifying-glass {
+  background-color: inherit;
+}
+
+.search-input-collapsed {
+  transition: all 0.3s;
+  position: absolute;
+  left: 1.5rem;
+  top: 0.5rem;
+  font-family: FontAwesome;
+  border: none;
+  background-color: inherit;
+  width: 2.5rem;
+  height: 2rem;
+  opacity: 0.33;
+
+  overflow: hidden;
+}
+
+.search-input-collapsed:focus {
+  outline: none;
+}
+
+.search-input-collapsed:hover {
+  opacity: 1;
+}
+
+.search-input-expanded {
+  transition: all 0.3s;
+
+  position: absolute;
+  left: 1.5rem;
+  top: 0.5rem;
+  background-color: inherit;
+  width: 10rem;
+  height: 1.5rem;
+  background-color: #f0ead2;
+  border-radius: 3px;
+  border: none;
+}
+
+.search-input-expanded:focus {
+  outline: none;
+}
+.search-input-expanded::placeholder {
+  color: transparent;
+}
+.search {
+  border: none;
+  background-color: inherit;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  height: 1em;
+  width: 1em;
+  border-radius: 50em;
+  background: url(https://pro.fontawesome.com/releases/v5.10.0/svgs/solid/times-circle.svg)
+    no-repeat 50% 50%;
+  background-size: contain;
+  opacity: 0.3;
+  pointer-events: all;
+}
+
+input[type="search"]:focus::-webkit-search-cancel-button {
+  opacity: 0.3;
+  pointer-events: all;
+}
+
 /*
 input {
   background-color: #f0ead2;

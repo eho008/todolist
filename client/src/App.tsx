@@ -4,8 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "./state/store.tsx";
 import { type ListType } from "./state/listsSlice.tsx";
 import styled from "styled-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchLists } from "./state/listsSlice.tsx";
+import Search from "./Components/Search.tsx";
+import { fetchItems } from "./state/itemsSlice.tsx";
 
 const StyledPage = styled.div`
   display: flex;
@@ -42,24 +44,54 @@ const StyledLists = styled.div`
 `;
 
 function App() {
+  const [query, setQuery] = useState<string>("");
   const lists = useSelector((state: RootState) => state.lists.lists);
-  const status = useSelector((state: RootState) => state.lists.status);
+  const listsStatus = useSelector((state: RootState) => state.lists.status);
+  const items = useSelector((state: RootState) => state.items.items);
+  const itemsStatus = useSelector((state: RootState) => state.items.status);
   const dispatch = useDispatch<AppDispatch>();
+  const [filteredLists, setFilteredLists] = useState<ListType[]>([]);
+
+  function searchQuery({ strg, query }: { strg: string; query: string }) {
+    return strg.toLowerCase().includes(query.toLowerCase());
+  }
 
   useEffect(() => {
-    if (status === "idle") {
+    if (listsStatus === "idle") {
       dispatch(fetchLists());
     }
-  }, [status, dispatch]);
+    if (itemsStatus === "idle" && listsStatus === "succeeded") {
+      lists.map((list) => dispatch(fetchItems(list.listId)));
+    }
+  }, [listsStatus, dispatch, itemsStatus, lists]);
+
+  useEffect(() => {
+    if (listsStatus === "succeeded" && itemsStatus === "succeeded") {
+      const filterList = lists.filter(
+        (list) =>
+          searchQuery({ strg: list.title, query: query }) ||
+          items.some(
+            (item) =>
+              item.listId === list.listId &&
+              searchQuery({ strg: item.content, query: query })
+          )
+      );
+
+      setFilteredLists(filterList);
+    }
+  }, [lists, listsStatus, setFilteredLists, query, items, itemsStatus]);
 
   return (
     <StyledPage>
       <StyledBorder />
       <StyledPaper>
-        <h1>To Do List</h1>
+        <div className="top-page">
+          <Search setQuery={setQuery} />
+          <h1>To Do List</h1>
+        </div>
         <CreateListForm />
         <StyledLists>
-          {lists.map((list: ListType) => (
+          {filteredLists.map((list: ListType) => (
             <List list={list} key={list.listId} />
           ))}
         </StyledLists>

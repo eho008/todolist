@@ -80,12 +80,6 @@ const StyledBell = styled.img`
   margin: 0.3rem;
 `;
 
-const StyledEmptyBell = styled.i`
-  font-size: small;
-  background-color: inherit;
-  margin: 0.3rem;
-`;
-
 const StyledX = styled.i`
   background-color: inherit;
 `;
@@ -185,7 +179,7 @@ export default function List({ list }: ListProps) {
             {timeUp ? (
               <StyledBell src="../../public/001-bell.png" alt="bell" />
             ) : (
-              <StyledEmptyBell className="fa-regular fa-bell"></StyledEmptyBell>
+              <StyledX className="fa-regular fa-bell"></StyledX>
             )}
             <DatePicker list={list} />
             <StyledX

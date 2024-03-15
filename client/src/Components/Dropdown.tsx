@@ -28,7 +28,7 @@ interface DropdownPorps {
 
 export default function Dropdown({ list }: DropdownPorps) {
   const { ref, isComponentVisible, setIsComponentVisible } =
-    useComponentVisible(false);
+    useComponentVisible<HTMLUListElement>(false);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -47,9 +47,10 @@ export default function Dropdown({ list }: DropdownPorps) {
         ref={ref}
       >
         <StyledListItem
-          onClick={() =>
-            dispatch(updateList({ ...list, reminder: new Date(Date.now()) }))
-          }
+          onClick={() => {
+            dispatch(updateList({ ...list, reminder: new Date(Date.now()) }));
+            setIsComponentVisible(false);
+          }}
         >
           <i className="fa-regular fa-bell"></i>
         </StyledListItem>
